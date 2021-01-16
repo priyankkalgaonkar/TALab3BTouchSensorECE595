@@ -1,19 +1,20 @@
-/* mbed Microcontroller Library
- * Copyright (c) 2019 ARM Limited
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include "mbed.h"
 
-DigitalIn button(D6);
+DigitalOut buzzer(D2);
+DigitalOut led_green(LED_GREEN);
+InterruptIn sw2(SW2);
+
+void sw2_release(void)
+{
+    led_green = !led_green;
+    buzzer = !buzzer;
+    
+    printf("On-board button SW2 was released.\n");
+}
 
 int main()
 {
-    while(1){
-        if(button){
-            printf("Button Pressed\n\r");
-            wait(0.7); // simple debouncing
-        }           
+    sw2.rise(&sw2_release);
+    while (true) {
     }
-
 }
